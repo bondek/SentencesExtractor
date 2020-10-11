@@ -31,6 +31,10 @@ public class CsvSentencesWriter implements SentencesWriter {
                 os.close();
             } catch (IOException exIn) {
                 throw new SentencesWriterException(exIn);
+            } finally {
+                if (tempFile != null) {
+                    tempFile.delete();
+                }
             }
             throw new SentencesWriterException(ex);
         }
