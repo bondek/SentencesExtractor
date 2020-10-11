@@ -1,16 +1,16 @@
 package pl.bondek.sentences.writer;
 
 import com.opencsv.CSVWriter;
+import org.apache.commons.io.IOUtils;
 import pl.bondek.sentences.Sentence;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CsvSentencesWriter implements SentencesWriter {
-
-    public static final int COPY_BUFFER_SIZE = 1024;
 
     private OutputStream os;
     private CSVWriter writer;
@@ -23,6 +23,7 @@ public class CsvSentencesWriter implements SentencesWriter {
         try {
             tempFile = Files.createTempFile("Sentences-", ".tmp").toFile();
             tempFile.deleteOnExit();
+
             FileWriter tempFileWriter = new FileWriter(tempFile);
             writer = new CSVWriter(tempFileWriter);
         } catch (IOException ex) {
@@ -38,28 +39,24 @@ public class CsvSentencesWriter implements SentencesWriter {
     public synchronized void writeSentence(Sentence sentence) {
         List<String> lineAsList = new LinkedList<>();
         lineAsList.add("Sentence " + lineNo++);
-        lineAsList.addAll(sentence.getWords());
+        lineAsList.addAll(sentence.getWords().stream().map(s -> " " + s).collect(Collectors.toList()));
 
         if (sentence.getWords().size() > maxColumns) {
             maxColumns = sentence.getWords().size();
         }
 
         String[] line = lineAsList.toArray(new String[] {});
-        writer.writeNext(line);
+        writer.writeNext(line, false);
     }
 
     public synchronized void close() throws IOException {
         if (writer != null) {
             writer.close();
 
-            os.write(",".getBytes());
-
-            for (int i = 1; i < maxColumns + 1; i++) {
-                os.write(("," + "Word " + i).getBytes());
-            }
+            addCsvHeaderToStream();
 
             try (InputStream is = new FileInputStream(tempFile)) {
-                copyStream(is, os);
+                IOUtils.copy(is, os);
             }
 
             os.close();
@@ -69,11 +66,14 @@ public class CsvSentencesWriter implements SentencesWriter {
         writer = null;
     }
 
-    private void copyStream(InputStream is, OutputStream os) throws IOException {
-        int n;
-        byte[] buffer = new byte[COPY_BUFFER_SIZE];
-        while ((n = is.read(buffer)) > -1) {
-            os.write(buffer, 0, n);
+    private void addCsvHeaderToStream() throws IOException {
+        for (int i = 1; i < maxColumns + 1; i++) {
+            os.write(("," + " Word " + i).getBytes());
+        }
+
+        if (maxColumns > 0) {
+            os.write("\n".getBytes());
         }
     }
+
 }

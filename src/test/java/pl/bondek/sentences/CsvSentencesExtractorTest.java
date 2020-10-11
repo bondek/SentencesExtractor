@@ -29,8 +29,8 @@ public class CsvSentencesExtractorTest extends TestCase {
     @Parameterized.Parameters
     public static Collection<Object[]> sourceFiles() {
         return Arrays.asList(new Object[][] {
-            { "reference-input.txt", "reference-expected.csv", "reference-expected.csv"},
-            { "empty-input.txt", "empty-output.csv", "empty-output.csv" }
+            { "reference-input.txt", "reference-output.csv", "reference-expected.csv"},
+            { "empty-input.txt", "empty-output.csv", "empty-expected.csv" }
         });
     }
 
@@ -46,7 +46,8 @@ public class CsvSentencesExtractorTest extends TestCase {
         SentencesExtractorApp app = new SentencesExtractorApp(args, inputFileStream, outputFileStream);
         app.extractSentences();
 
-        FileUtils.contentEquals(new File(expectedFile), new File(outputFile));
+        assertEquals(FileUtils.readLines(new File("src/test/resources/" + expectedFile), "UTF-8"),
+                FileUtils.readLines(new File(outputFilePath), "UTF-8"));
     }
 
 }
