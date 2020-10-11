@@ -11,7 +11,7 @@ To execute extractor it's required to:
 
 ### Prerequisites
 
-* JDK 8 or higher
+* JDK 9 or higher
 * Maven 3.0 or higher
 * Git client
 

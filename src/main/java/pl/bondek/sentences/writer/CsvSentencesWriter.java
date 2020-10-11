@@ -5,11 +5,8 @@ import pl.bondek.sentences.Sentence;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class CsvSentencesWriter implements SentencesWriter {
 
@@ -17,16 +14,16 @@ public class CsvSentencesWriter implements SentencesWriter {
 
     private OutputStream os;
     private CSVWriter writer;
-    private Path tempFilePath;
+    private File tempFile;
     private int lineNo = 1;
     private int maxColumns = 0;
 
     public CsvSentencesWriter(OutputStream os) {
         this.os = os;
         try {
-            tempFilePath = Files.createTempFile("Sentences-", ".tmp");
-            tempFilePath.toFile().deleteOnExit();
-            FileWriter tempFileWriter = new FileWriter(tempFilePath.toFile());
+            tempFile = Files.createTempFile("Sentences-", ".tmp").toFile();
+            tempFile.deleteOnExit();
+            FileWriter tempFileWriter = new FileWriter(tempFile);
             writer = new CSVWriter(tempFileWriter);
         } catch (IOException ex) {
             try {
@@ -61,11 +58,12 @@ public class CsvSentencesWriter implements SentencesWriter {
                 os.write(("," + "Word " + i).getBytes());
             }
 
-            try (InputStream is = new FileInputStream(tempFilePath.toFile())) {
+            try (InputStream is = new FileInputStream(tempFile)) {
                 copyStream(is, os);
             }
 
             os.close();
+            tempFile.delete();
         }
 
         writer = null;
