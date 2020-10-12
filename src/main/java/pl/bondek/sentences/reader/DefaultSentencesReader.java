@@ -66,7 +66,7 @@ public class DefaultSentencesReader implements SentencesReader {
                     String specialToken = lastToken + token.getText();
                     if (isSpecialWord(specialToken)) {
                         sentenceWords.set(sentenceWords.size() - 1, specialToken);
-                    } else if (token.isSentenceEnd()) {
+                    } else if (token.isSentenceEnd() && !sentenceWords.isEmpty()) {
                         Sentence sentence = createSentence(sentenceWords);
                         bufferedTokens = tokens.subList(idx, tokens.size());
                         return sentence;
@@ -75,6 +75,11 @@ public class DefaultSentencesReader implements SentencesReader {
                 lastToken = token.getText();
                 idx++;
             }
+        }
+
+        if (!sentenceWords.isEmpty()) {
+            Sentence sentence = createSentence(sentenceWords);
+            return sentence;
         }
 
         throw new NoSuchElementException("End of source reached.");

@@ -36,6 +36,10 @@ public class Tokenizer {
             }
         }
 
+        if (wordBuffer.length() > 0) {
+            tokenFromBuffer(tokens, wordBuffer);
+        }
+
         return tokens;
     }
 

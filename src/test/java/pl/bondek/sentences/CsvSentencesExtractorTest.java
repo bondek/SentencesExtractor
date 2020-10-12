@@ -30,7 +30,8 @@ public class CsvSentencesExtractorTest extends TestCase {
     public static Collection<Object[]> sourceFiles() {
         return Arrays.asList(new Object[][] {
             { "reference-input.txt", "reference-output.csv", "reference-expected.csv"},
-            { "empty-input.txt", "empty-output.csv", "empty-expected.csv" }
+            { "empty-input.txt", "empty-output.csv", "empty-expected.csv" },
+            { "no-final-dot-input.txt", "no-final-dot-output.csv", "no-final-dot-expected.csv" }
         });
     }
 

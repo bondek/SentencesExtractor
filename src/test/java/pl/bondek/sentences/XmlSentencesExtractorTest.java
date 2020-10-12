@@ -30,7 +30,8 @@ public class XmlSentencesExtractorTest extends TestCase {
     public static Collection<Object[]> sourceFiles() {
         return Arrays.asList(new Object[][] {
             { "reference-input.txt", "reference-output.xml", "reference-expected.xml" },
-            { "empty-input.txt", "empty-output.xml", "empty-expected.xml" }
+            { "empty-input.txt", "empty-output.xml", "empty-expected.xml" },
+            { "no-final-dot-input.txt", "no-final-dot-output.xml", "no-final-dot-expected.xml" }
         });
     }
 
