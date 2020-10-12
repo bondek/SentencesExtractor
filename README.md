@@ -1,6 +1,6 @@
 # Sentence Extractor
 
-This is a java program which is dividing inputed text into sentences and words providing output in CSV or XML formats.
+Sentence Extractor is a java program which consumes text fron stdin, breaks text into sentences and word and writes output to stdout in CSV or XML formats.
 
 ## Getting Started
 
@@ -11,7 +11,7 @@ To execute extractor it's required to:
 
 ### Prerequisites
 
-* JDK 9 or higher
+* JDK 9 or higher (works also on Java 8 but there is no standalone="yes" directive in output xml)
 * Maven 3.0 or higher
 * Git client
 
@@ -38,19 +38,19 @@ The simplest way to run is present below (we are using input from test file src/
 
 * for XML output
 ```
-java -jar target/SentencesExtractor-all.jar -o XML < src/test/resources/reference-input.txt > reference-output.txt
+java -jar target/SentencesExtractor-all.jar -o XML < src/test/resources/reference-input.txt > reference-output.xml
 ```
 
 * for CSV output
 ```
-java -jar target/SentencesExtractor-all.jar -o CSV < src/test/resources/reference-input.txt > reference-output.txt
+java -jar target/SentencesExtractor-all.jar -o CSV < src/test/resources/reference-input.txt > reference-output.csv
 ```
 
 The program has an option to provide file with special words containing end of sentence character [.?!] which shouldn't end the sentence (e.g. 'Mr.').
 This can be done with -s option as follows
 
 ```
-java -jar target/SentencesExtractor-all.jar -o XML -s src/main/resources/special-words.txt < src/test/resources/reference-input.txt > reference-output.txt
+java -jar target/SentencesExtractor-all.jar -o XML -s src/main/resources/special-words.txt < src/test/resources/reference-input.txt > reference-output.xml
 ```
 
 ### Logging
@@ -67,8 +67,8 @@ Example test files are present in src/test/resources. Adding additional test fil
     @Parameterized.Parameters
     public static Collection<Object[]> sourceFiles() {
         return Arrays.asList(new Object[][] {
-            { "reference-input.txt", "reference-expected.csv", "reference-expected.csv"},
-            { "empty-input.txt", "empty-output.csv", "empty-output.csv" }
+            { "reference-input.txt", "reference-output.csv", "reference-expected.csv"},
+            { "empty-input.txt", "empty-output.csv", "empty-expected.csv" }
         });
     }
 ```
@@ -76,7 +76,7 @@ Example test files are present in src/test/resources. Adding additional test fil
 To test if program doesn't load whole file to memory we need big input file (size > 36 MB) called large.in which is placed in project root folder.
 
 ```
-java -Xmx32m -jar target/SentencesExtractor-all.jar -o XML < large.in > reference-output.txt
+java -Xmx32m -jar target/SentencesExtractor-all.jar -o XML < large.in > reference-output.xml
 ```
 
 ## Built With
