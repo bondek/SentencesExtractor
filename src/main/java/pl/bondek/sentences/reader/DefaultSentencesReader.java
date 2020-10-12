@@ -115,6 +115,9 @@ public class DefaultSentencesReader implements SentencesReader {
         scanner.close();
     }
 
+    /**
+     * Default ignore case string comparator with opposite order of of the same words in different case.
+     */
     public static class WordsComparator implements Comparator<String> {
         @Override
         public int compare(String s1, String s2) {

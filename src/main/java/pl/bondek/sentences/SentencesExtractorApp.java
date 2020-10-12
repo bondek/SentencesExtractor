@@ -9,11 +9,6 @@ import pl.bondek.sentences.writer.SentencesWriter;
 import pl.bondek.sentences.writer.SentencesWriterFactory;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,6 +30,8 @@ public class SentencesExtractorApp {
     public void extractSentences() {
         Stream<Sentence> sentencesStream = readSentencesStream();
         writeSentencesStream(sentencesStream);
+
+        logger.info("Sentences extracted and written to stdout successfully.");
     }
 
     private void writeSentencesStream(Stream<Sentence> sentencesStream) {
@@ -50,6 +47,9 @@ public class SentencesExtractorApp {
     private Stream<Sentence> readSentencesStream() {
         try {
             List<String> specialWords = readSpecialWords();
+
+            logger.info("Reading text from stdin and writing to stdout.");
+
             SentencesReader sentencesReader = new DefaultSentencesReader(is, specialWords);
             Stream<Sentence> sentencesStream = sentencesReader.sentencesStream();
             return sentencesStream;
@@ -63,8 +63,10 @@ public class SentencesExtractorApp {
         try {
             InputStream specialWordsIs;
             if (extractorArgs.getSpecialWordsPath() == null || extractorArgs.getSpecialWordsPath().isEmpty()) {
+                logger.info("Reading special words from: classpath:special-words.txt");
                 specialWordsIs = this.getClass().getClassLoader().getResourceAsStream("special-words.txt");
             } else {
+                logger.info("Reading special words from: file:{}", extractorArgs.getSpecialWordsPath());
                 specialWordsIs = new BufferedInputStream(new FileInputStream(extractorArgs.getSpecialWordsPath()));
             }
 
