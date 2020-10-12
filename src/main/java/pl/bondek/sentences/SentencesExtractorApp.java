@@ -38,7 +38,7 @@ public class SentencesExtractorApp {
         SentencesWriterFactory writersFactory = new SentencesWriterFactory();
         try (SentencesWriter writer = writersFactory.createWriter(extractorArgs.getOutputType(), os)) {
             sentencesStream.forEach(writer::writeSentence);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             throw new SentencesExtractorException(ex);
         }
@@ -106,7 +106,7 @@ public class SentencesExtractorApp {
             cmd = parser.parse(options, args);
         } catch (ParseException ex) {
             logger.error(ex.getMessage(), ex);
-            formatter.printHelp("utility-name", options);
+            formatter.printHelp("SentencesExtractor", options);
             System.exit(1);
             return null;
         }
