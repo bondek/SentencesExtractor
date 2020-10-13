@@ -111,7 +111,7 @@ public class SentencesExtractorApp {
             return null;
         }
 
-        String outputFormat = cmd.getOptionValue('o', "");
+        String outputFormat = cmd.getOptionValue('o', "XML");
         String specialWordsPath = cmd.getOptionValue('s', "");
         SentencesExtractorArgs extractorArgs = new SentencesExtractorArgs(outputFormat, specialWordsPath);
         return extractorArgs;
