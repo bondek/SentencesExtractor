@@ -47,12 +47,12 @@ public class DefaultSentencesReader implements SentencesReader {
     }
 
     @Override
-    public boolean hasNext() {
+    public synchronized boolean hasNext() {
         return !bufferedTokens.isEmpty() || scanner.hasNextLine();
     }
 
     @Override
-    public Sentence next() {
+    public synchronized Sentence next() {
         List<String> sentenceWords = new LinkedList<>();
         String lastToken = "";
 
