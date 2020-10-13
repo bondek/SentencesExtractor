@@ -53,6 +53,26 @@ This can be done with -s option as follows
 java -jar target/SentencesExtractor-all.jar -o XML -s src/main/resources/special-words.txt < src/test/resources/reference-input.txt > reference-output.xml
 ```
 
+For list of possible command line options please execute
+```
+java -jar target/SentencesExtractor-all.jar --help
+```
+
+### Running interactively
+
+It's possible to run program interactively. It would accept text input written by user and immediately writes corresponding output if whole sentence is read.
+
+```
+java -jar target/SentencesExtractor-all.jar -o XML
+<?xml version="1.0" encoding="UTF-8"?>
+<text>
+This is my sentence. First one. And this would be
+<sentence><word>is</word><word>my</word><word>sentence</word><word>This</word></sentence>
+<sentence><word>First</word><word>one</word></sentence>
+a second one.
+<sentence><word>a</word><word>And</word><word>be</word><word>one</word><word>second</word><word>this</word><word>would</word></sentence>
+```
+
 ### Logging
 
 Since program is writing its output to stdin logs should come to different place and in our case it's configured to send logs to extractor.log file by default. 
